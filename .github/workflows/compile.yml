@@ -7,6 +7,12 @@ jobs:
     steps:
       - name: Clone repo
         uses: actions/checkout@v3
+        with:
+          repository: VolmitSoftware/Iris
+          path: iris
+
+      - name: Show repo structure (Debugging)
+        run: ls -R iris
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -14,8 +20,14 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Move into the correct directory
-        run: cd ${{ github.workspace }} && ls && mvn clean package
+      - name: Install Maven
+        run: sudo apt update && sudo apt install maven -y
+
+      - name: Move into the correct directory and compile
+        run: |
+          cd iris
+          ls  # Verify pom.xml exists
+          mvn clean package
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
