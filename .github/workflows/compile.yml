@@ -8,11 +8,11 @@ jobs:
       - name: Clone the correct repository
         uses: actions/checkout@v3
         with:
-          repository: VolmitSoftware/Iris  # Correct repo
-          path: iris  # Clones into a folder named 'iris'
+          repository: VolmitSoftware/Iris
+          path: iris
 
       - name: Show repo structure (Debugging)
-        run: ls -R iris  # Check where pom.xml is
+        run: ls -R iris
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -20,19 +20,16 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Install Maven
-        run: sudo apt update && sudo apt install maven -y
+      - name: Install Gradle
+        run: sudo apt update && sudo apt install gradle -y
 
-      - name: Find the actual pom.xml location
-        run: find iris -name "pom.xml"
-
-      - name: Move into the correct directory and compile
+      - name: Move into the correct directory and build
         run: |
           cd iris
-          if [ -f "pom.xml" ]; then
-            mvn clean package
+          if [ -f "build.gradle" ]; then
+            ./gradlew build
           else
-            echo "Error: pom.xml not found!"
+            echo "Error: build.gradle not found!"
             exit 1
           fi
 
@@ -40,4 +37,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Iris-JAR
-          path: iris/target/*.jar
+          path: iris/build/libs/*.jar
