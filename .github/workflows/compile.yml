@@ -14,7 +14,7 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Iris-JAR
           path: target/*.jar
